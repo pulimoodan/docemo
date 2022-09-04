@@ -5,14 +5,15 @@ import { ViewService } from './view.service';
 
 @Controller('/')
 export class ViewController {
-  constructor(private viewService: ViewService) {}
+  constructor(private viewService: ViewService) { }
 
   // Add all view base paths here
   @Get([
     '/',
     '_next*',
+    'checkout*',
   ])
-  
+
   public async showHome(@Req() req: Request, @Res() res: Response) {
     this._fireUpNext(req, res);
   }

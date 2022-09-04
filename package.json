@@ -21,6 +21,10 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@adminjs/express": "^5.0.0",
+    "@adminjs/nestjs": "^5.0.1",
+    "@adminjs/prisma": "^3.0.1",
+    "@nestjs-modules/mailer": "^1.8.1",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^2.2.0",
     "@nestjs/core": "^9.0.0",
@@ -28,19 +32,32 @@
     "@nestjs/mapped-types": "*",
     "@nestjs/passport": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
+    "@nowpaymentsio/nowpayments-api-js": "^1.0.5",
     "@prisma/client": "^4.2.1",
-    "@types/react": "^18.0.17",
+    "@types/nodemailer": "^6.4.5",
+    "adminjs": "^6.1.6",
+    "axios": "^0.27.2",
     "bcrypt": "^5.0.1",
+    "bootstrap": "^5.2.0",
+    "bootstrap-icons": "^1.9.1",
     "class-validator": "^0.13.2",
+    "country-state-city": "^3.1.1",
+    "express-formidable": "^1.2.0",
+    "express-session": "^1.17.3",
     "next": "12",
+    "nodemailer": "^6.7.8",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
     "react": "^18.2.0",
+    "react-bootstrap": "^2.5.0",
     "react-dom": "^18.2.0",
+    "react-paypal-button-v2": "^2.6.3",
+    "react-stripe-checkout": "^2.6.3",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "rxjs": "^7.2.0"
+    "rxjs": "^7.2.0",
+    "sass": "^1.54.8"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",
@@ -50,6 +67,7 @@
     "@types/jest": "28.1.4",
     "@types/node": "^18.7.14",
     "@types/passport-local": "^1.0.34",
+    "@types/react": "^18.0.18",
     "@types/react-dom": "^18.0.6",
     "@types/supertest": "^2.0.11",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
@@ -87,8 +105,5 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
-  },
-  "prisma": {
-    "seed": "ts-node prisma/seed.ts"
   }
 }

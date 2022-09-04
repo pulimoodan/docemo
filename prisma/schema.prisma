@@ -7,21 +7,70 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Article {
-  id          Int      @id @default(autoincrement())
-  title       String   @unique
-  description String?
-  body        String
-  published   Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
-
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  password  String
-  name      String
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  password String
+  name     String
+
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
+}
+
+model Product {
+  id       Int      @id @default(autoincrement())
+  name     String   @unique
+  per      String
+  price    Decimal
+  features String[]
+  active   Boolean  @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  OrderProduct OrderProduct[]
+}
+
+model Customer {
+  id        Int    @id @default(autoincrement())
+  email     String @unique
+  firstName String
+  lastName  String
+  address   String
+  country   String
+  state     String
+  zip       String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  orders Order[]
+}
+
+model Order {
+  id Int @id @default(autoincrement())
+
+  customer   Customer       @relation(fields: [customerId], references: [id])
+  customerId Int
+  products   OrderProduct[]
+
+  paid            Boolean @default(false)
+  paymentType     String?
+  paymentId       String?
+  paymentCurrency String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model OrderProduct {
+  id Int @id @default(autoincrement())
+
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int
+  quantity  Int
+
+  Order Order[]
+
+  @@unique([productId, quantity])
 }

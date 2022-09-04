@@ -1,0 +1,13 @@
+.features_icons_item {
+    max-width: 20rem;
+    height: 100% !important;
+    padding: 1rem;
+}
+
+.features_icons_item .features_icons_icon {
+    height: 7rem;
+}
+
+.features_icons_item .features_icons_icon i {
+    font-size: 3.5rem;
+}

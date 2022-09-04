@@ -1,0 +1,14 @@
+.list_group {
+    margin-right: -1rem;
+    margin-left: -1rem;
+    border-radius: 0;
+}
+
+.list_group > * {
+    border-right: none;
+    border-left: none;
+}
+
+.card_deck .card {
+    min-width: 220px;
+}
