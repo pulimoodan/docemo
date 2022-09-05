@@ -1,5 +1,5 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
-import next  from 'next';
+import next from 'next';
 import { NextServer } from 'next/dist/server/next';
 
 @Injectable()
@@ -8,7 +8,7 @@ export class ViewService implements OnModuleInit {
 
   async onModuleInit(): Promise<void> {
     try {
-      this.server = next ({
+      this.server = next({
         dev: process.env.NODE_ENV !== 'production',
         dir: './src/client',
       });

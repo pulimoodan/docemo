@@ -5,10 +5,12 @@ import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class CustomersService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   async create(createCustomerDto: CreateCustomerDto) {
-    const exist = await this.prisma.customer.findUnique({ where: { email: createCustomerDto.email } });
+    const exist = await this.prisma.customer.findUnique({
+      where: { email: createCustomerDto.email },
+    });
     if (exist) {
       return this.update(exist.id, createCustomerDto);
     }

@@ -1,14 +1,14 @@
 header.masthead {
   position: relative;
   background-color: #343a40;
-  background: url("../../../assets/img/bg-masthead.jpg") no-repeat center center;
+  background: url('../../../assets/img/bg-masthead.jpg') no-repeat center center;
   background-size: cover;
   padding-top: 8rem;
   padding-bottom: 8rem;
 }
 
 header.masthead:before {
-  content: "";
+  content: '';
   position: absolute;
   background-color: #1c375e;
   height: 100%;
@@ -63,14 +63,14 @@ header.masthead .h1 {
 .call_to_action {
   position: relative;
   background-color: #343a40;
-  background: url("../../../assets/img/bg-masthead.jpg") no-repeat center center;
+  background: url('../../../assets/img/bg-masthead.jpg') no-repeat center center;
   background-size: cover;
   padding-top: 7rem;
   padding-bottom: 7rem;
 }
 
 .call_to_action:before {
-  content: "";
+  content: '';
   position: absolute;
   background-color: #1c375e;
   height: 100%;
@@ -89,5 +89,5 @@ header.masthead .h1 {
 }
 
 .box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.05);
 }

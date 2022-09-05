@@ -13,7 +13,7 @@
     "baseUrl": "./",
     "incremental": true,
     "lib": ["ES2020", "dom"],
-    "jsx": "preserve" 
+    "jsx": "preserve"
   },
   "ts-node": {
     "files": true

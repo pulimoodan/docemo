@@ -41,4 +41,4 @@ import { MailController } from './mail.controller';
   exports: [MailService],
   controllers: [MailController], // 👈 export for DI
 })
-export class MailModule { }
+export class MailModule {}

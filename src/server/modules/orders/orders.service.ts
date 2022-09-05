@@ -7,7 +7,18 @@ import { MailService } from '../mail/mail.service';
 
 @Injectable()
 export class OrdersService {
-  constructor(private prisma: PrismaService, private mailService: MailService) { }
+  constructor(
+    private prisma: PrismaService,
+    private mailService: MailService,
+  ) {}
+
+  loadEnv() {
+    return {
+      baseURL: process.env.BASE_URL || null,
+      stripeKey: process.env.STRIPE_KEY || null,
+      nowPaymentsKey: process.env.NOW_PAYMENTS_KEY || null,
+    };
+  }
 
   async create(createOrderDto: CreateOrderDto) {
     let orderProducts = [];
@@ -16,25 +27,29 @@ export class OrdersService {
         where: {
           productId_quantity: {
             productId: createOrderDto.productsArray[i].id,
-            quantity: createOrderDto.productsArray[i].quantity
-          }
+            quantity: createOrderDto.productsArray[i].quantity,
+          },
         },
         update: {},
         create: {
           productId: createOrderDto.productsArray[i].id,
-          quantity: createOrderDto.productsArray[i].quantity
-        }
+          quantity: createOrderDto.productsArray[i].quantity,
+        },
       });
       orderProducts.push(orderProduct);
     }
     return this.prisma.order.create({
       data: {
-        products: { connect: orderProducts.map((item) => { return { id: item.id } }) },
+        products: {
+          connect: orderProducts.map((item) => {
+            return { id: item.id };
+          }),
+        },
         customer: { connect: { id: createOrderDto.customerId } },
         paid: createOrderDto.paid,
         paymentType: createOrderDto.paymentType,
-        paymentCurrency: createOrderDto.paymentCurrency
-      }
+        paymentCurrency: createOrderDto.paymentCurrency,
+      },
     });
   }
 
@@ -58,23 +73,23 @@ export class OrdersService {
   }
 
   async paymentHook(payment: PaymentResDto) {
-    if (payment.payment_status == "finished") {
+    if (payment.payment_status == 'finished') {
       const order = await this.prisma.order.update({
         where: {
-          id: Number(payment.order_id)
+          id: Number(payment.order_id),
         },
         data: {
           paid: true,
-          paymentId: String(payment.payment_id)
+          paymentId: String(payment.payment_id),
         },
         include: {
-          products: true
-        }
+          products: true,
+        },
       });
       const customer = await this.prisma.customer.findUnique({
         where: {
-          id: Number(order.customerId)
-        }
+          id: Number(order.customerId),
+        },
       });
       await this.mailService.sendConfirmationEmail(customer, order);
       return await this.mailService.sendEmailNotification(customer, order);
@@ -84,20 +99,20 @@ export class OrdersService {
   async stripeCheckout(data) {
     const order = await this.prisma.order.update({
       where: {
-        id: Number(data.orderId)
+        id: Number(data.orderId),
       },
       data: {
         paid: true,
-        paymentId: String(data.token.id)
+        paymentId: String(data.token.id),
       },
       include: {
         products: true,
-      }
+      },
     });
     const customer = await this.prisma.customer.findUnique({
       where: {
-        id: Number(order.customerId)
-      }
+        id: Number(order.customerId),
+      },
     });
     await this.mailService.sendConfirmationEmail(customer, order);
     return await this.mailService.sendEmailNotification(customer, order);

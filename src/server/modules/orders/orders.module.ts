@@ -9,4 +9,4 @@ import { MailModule } from '../mail/mail.module';
   providers: [OrdersService],
   imports: [PrismaModule, MailModule],
 })
-export class OrdersModule { }
+export class OrdersModule {}

@@ -17,8 +17,10 @@ Go to the `.env` file. Configure api keys in that file.
 Go to the `.env` file and configure the website base url.
 
 ## Migration
+
 Configure `prisma/schema.prisma` file according to your database and paste the database url in the .env file as `DATABASE_URL`.
 Then run :
+
 ```bash
 $ yarn prisma migrate dev
 ```

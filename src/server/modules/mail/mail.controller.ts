@@ -3,10 +3,10 @@ import { MailService } from './mail.service';
 
 @Controller('mail')
 export class MailController {
-    constructor(private readonly mailService: MailService) { }
+  constructor(private readonly mailService: MailService) {}
 
-    @Post('enquiry')
-    enquiry(@Body() data) {
-        return this.mailService.sendEnquiryEmail(data.email);
-    }
+  @Post('enquiry')
+  enquiry(@Body() data) {
+    return this.mailService.sendEnquiryEmail(data.email);
+  }
 }

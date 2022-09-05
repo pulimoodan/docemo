@@ -23,13 +23,16 @@ AdminJS.registerAdapter({ Resource, Database });
       imports: [PrismaModule],
       inject: [PrismaService],
       useFactory: async (prisma: PrismaService) => {
-        const dmmf = ((prisma as any)._baseDmmf as DMMFClass)
+        const dmmf = (prisma as any)._baseDmmf as DMMFClass;
         return {
           auth: {
-            authenticate: async (email, password) => Promise.resolve(
-              email == process.env.ADMIN_EMAIL && password == process.env.ADMIN_PASSWORD ?
-                { email: process.env.ADMIN_EMAIL } : null
-            ),
+            authenticate: async (email, password) =>
+              Promise.resolve(
+                email == process.env.ADMIN_EMAIL &&
+                  password == process.env.ADMIN_PASSWORD
+                  ? { email: process.env.ADMIN_EMAIL }
+                  : null,
+              ),
             cookieName: 'test',
             cookiePassword: 'testPass',
           },
@@ -41,38 +44,41 @@ AdminJS.registerAdapter({ Resource, Database });
                 options: {
                   navigation: {
                     icon: 'InventoryManagement',
-                    name: null
+                    name: null,
                   },
                   properties: {
                     features: { isArray: true, type: 'string' },
-                  }
-                }
+                  },
+                },
               },
               {
                 resource: { model: dmmf.modelMap.Customer, client: prisma },
                 options: {
                   navigation: {
                     icon: 'User',
-                    name: null
-                  }
-                }
+                    name: null,
+                  },
+                },
               },
               {
                 resource: { model: dmmf.modelMap.Order, client: prisma },
                 options: {
                   navigation: {
                     icon: 'Currency',
-                    name: null
+                    name: null,
                   },
                   properties: {
-                    products: { isArray: true, type: dmmf.modelMap.OrderProduct },
-                  }
-                }
-              }
-            ]
+                    products: {
+                      isArray: true,
+                      type: dmmf.modelMap.OrderProduct,
+                    },
+                  },
+                },
+              },
+            ],
           },
-        }
-      }
+        };
+      },
     }),
     ViewModule,
     PrismaModule,
@@ -86,4 +92,4 @@ AdminJS.registerAdapter({ Resource, Database });
   controllers: [],
   providers: [],
 })
-export class AppModule { }
+export class AppModule {}

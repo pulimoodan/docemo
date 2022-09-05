@@ -1,7 +1,9 @@
 {
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
+  "/checkout": "pages/checkout.html",
+  "/checkout/success": "pages/checkout/success.html",
+  "/": "pages/index.html",
   "/_document": "pages/_document.js",
-  "/checkout/success": "pages/checkout/success.js",
-  "/": "pages/index.js"
+  "/404": "pages/404.html"
 }
