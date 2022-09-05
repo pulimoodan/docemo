@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import CartContext from '../../contexts/CartContext';
 import Link from 'next/link';
+import logo from '../../../../assets/img/logo-1.png';
 
 export default function Navbar({ setShowCart }) {
     const cartItems = useContext(CartContext);
@@ -10,8 +11,9 @@ export default function Navbar({ setShowCart }) {
             <div className="container justify-content-between">
                 <Link href="/" className="navbar-brand">
                     <div style={{ 'cursor': 'pointer' }}>
-                        <i className="bi-cpu"></i> &nbsp;
-                        Windows Server Support
+                        <img src={logo.src} alt="Docemo logo" style={{ width: '100px' }} />
+                        {/* <i className="bi-cpu"></i> &nbsp;
+                        Windows Server Support */}
                     </div>
                 </Link>
 

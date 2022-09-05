@@ -7,12 +7,21 @@ import CartModal from '../../components/cartModal/CartModal';
 import CartContext from '../../contexts/CartContext';
 import { Country, State } from 'country-state-city';
 import axios from 'axios';
-
-import { baseUrl } from '../../constants/urls';
-import { nowPaymentsKey, stripeKey } from '../../constants/secrets';
 import { useRef } from 'react';
 
-export default function Checkout() {
+export async function getStaticProps() {
+    return {
+        props: {
+            env: {
+                baseURL: process.env.BASE_URL,
+                stripeKey: process.env.STRIPE_KEY,
+                nowPaymentsKey: process.env.NOW_PAYMENTS_KEY
+            }
+        }
+    }
+}
+
+export default function Checkout({ env }) {
     const cartItems = useContext(CartContext);
 
     const [currencies, setCurrencies] = useState([]);
@@ -37,6 +46,7 @@ export default function Checkout() {
 
     useEffect(() => {
         fetchCurrencies();
+        console.log(env);
     }, []);
 
     useEffect(() => {
@@ -57,7 +67,7 @@ export default function Checkout() {
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    'x-api-key': nowPaymentsKey
+                    'x-api-key': env.nowPaymentsKey
                 }
             }
         );
@@ -97,12 +107,12 @@ export default function Checkout() {
                 ipn_callback_url: 'https://api.nowpayments.io',
                 order_id: order.id,
                 order_description: 'windows server support',
-                success_url: `${baseUrl}/checkout/success`,
-                cancel_url: `${baseUrl}/checkout/`,
+                success_url: `${env.baseURL}/checkout/success`,
+                cancel_url: `${env.baseURL}/checkout/`,
             }, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'x-api-key': apiKey
+                    'x-api-key': env.nowPaymentsKey
                 }
             });
             document.location.href = payment.data.invoice_url;
@@ -252,7 +262,7 @@ export default function Checkout() {
                                                     email={customerDetails.email}
                                                     name={`${customerDetails.firstName} ${customerDetails.lastName}`}
                                                     token={stripeOnToken}
-                                                    stripeKey={stripeKey}
+                                                    stripeKey={env.stripeKey}
                                                     amount={totalPrice * 100}
                                                 />
                                             </div>

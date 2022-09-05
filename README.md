@@ -10,11 +10,11 @@ Copy the `.env.example` file and create a `.env` file. Configure your database a
 
 ## Client secrets
 
-Copy the `scr/client/constants/secrets.example.tsx` file and create a `secrets.tsx` file. Configure api keys in that file.
+Go to the `.env` file. Configure api keys in that file.
 
 ## Website url
 
-Go to the `scr/client/constants/urls.tsx` file and configure the website base url.
+Go to the `.env` file and configure the website base url.
 
 ## Migration
 Configure `prisma/schema.prisma` file according to your database and paste the database url in the .env file as `DATABASE_URL`.
