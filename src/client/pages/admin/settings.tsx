@@ -344,7 +344,7 @@ export default function Products() {
                     onChange={(e) => websiteHandler(e.target.value, 'baseUrl')}
                   />
                   <div className="form-text">
-                    Enter the domain of your website with htttps://
+                    Enter the domain of your website with https://
                   </div>
                 </div>
               </div>

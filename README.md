@@ -47,7 +47,7 @@ Go to `/admin/settings`, you can change your website domain and currency.
 ## Deploy the app
 
 ```bash
-$ yarn; yarn add @nestjs/cli; yarn prisma migrate deploy; yarn build
+$ yarn; yarn add @nestjs/cli typescript ts-node @types/node; yarn prisma migrate deploy; yarn prisma db seed; yarn build
 # production mode
 $ yarn start:prod
 ```
