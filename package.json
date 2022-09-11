@@ -21,10 +21,6 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@adminjs/express": "^5.0.0",
-    "@adminjs/nestjs": "^5.0.1",
-    "@adminjs/prisma": "^3.0.1",
-    "@fusionworks/ra-data-nest-crud": "^1.0.8",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^2.2.0",
     "@nestjs/core": "^9.0.0",
@@ -35,6 +31,7 @@
     "@nowpaymentsio/nowpayments-api-js": "^1.0.5",
     "@prisma/client": "^4.2.1",
     "@types/nodemailer": "^6.4.5",
+    "@types/react-dom": "^18.0.6",
     "axios": "^0.27.2",
     "bcrypt": "^5.0.1",
     "bootstrap": "^5.2.0",
@@ -59,8 +56,7 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
-    "sass": "^1.54.8",
-    "@types/react-dom": "^18.0.6"
+    "sass": "^1.54.8"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",
