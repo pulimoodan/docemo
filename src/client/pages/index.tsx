@@ -37,7 +37,6 @@ export default function Home() {
 
   const sendEmail = (e) => {
     e.preventDefault();
-    console.log('hi');
     axios
       .post('/mail/enquiry', {
         email,

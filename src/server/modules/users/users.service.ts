@@ -7,6 +7,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { User } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -22,6 +23,13 @@ export class UsersService {
     }
 
     delete user.password;
+    return user;
+  }
+
+  async getCurrent(): Promise<User> {
+    const user = await this.prismaService.user.findFirst();
+
+    user.password = '';
     return user;
   }
 
@@ -47,5 +55,29 @@ export class UsersService {
 
     delete user.password;
     return user;
+  }
+
+  async updateUser(data: UpdateUserDto, id: string): Promise<User> {
+    if (data.password.trim()) {
+      const hashedPassword = await bcrypt.hash(data.password, 10);
+      return this.prismaService.user.update({
+        where: {
+          id: Number(id),
+        },
+        data: {
+          ...data,
+          password: hashedPassword,
+        },
+      });
+    } else {
+      return this.prismaService.user.update({
+        where: {
+          id: Number(id),
+        },
+        data: {
+          email: data.email,
+        },
+      });
+    }
   }
 }

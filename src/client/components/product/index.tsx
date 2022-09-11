@@ -1,10 +1,32 @@
 import styles from './Product.module.css';
 import { useContext, useEffect, useState } from 'react';
 import CartContext from '../../contexts/CartContext';
+import axios from 'axios';
+import CurrencyList from 'currency-list';
 
 export default function Product({ product, navigateToCheckout }) {
   const cartItems = useContext(CartContext);
   const [addedToCart, setAddedToCart] = useState(false);
+  const [currency, setCurrency] = useState({
+    symbol: '$',
+  });
+  const [website, setWebsite] = useState({
+    baseUrl: '',
+    currency: 'USD',
+  });
+
+  useEffect(() => {
+    fetchConfig();
+  }, []);
+
+  const fetchConfig = async () => {
+    const res = await axios.get('/website');
+    setWebsite(res.data);
+  };
+
+  useEffect(() => {
+    setCurrency(CurrencyList.get(website.currency));
+  }, [website]);
 
   const addProductToCart = (product) => {
     cartItems.addItem(product);
@@ -33,7 +55,8 @@ export default function Product({ product, navigateToCheckout }) {
         </div>
         <div className="card-body">
           <h1 className="card-title pricing-card-title">
-            ${product.price}{' '}
+            {currency.symbol}
+            {product.price}{' '}
             <small className="text-muted">/ {product.per}</small>
           </h1>
           <ul className={`${styles.list_group} list-group mt-3 mb-4`}>

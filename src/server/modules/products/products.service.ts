@@ -30,7 +30,20 @@ export class ProductsService {
     });
   }
 
-  remove(id: number) {
+  async remove(id: number) {
+    const product = await this.prisma.product.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        OrderProduct: true,
+      },
+    });
+    for (const i in product.OrderProduct) {
+      await this.prisma.orderProduct.delete({
+        where: { id: product.OrderProduct[i].id },
+      });
+    }
     return this.prisma.product.delete({ where: { id } });
   }
 }

@@ -1,0 +1,24 @@
+.auth_wrapper {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: left;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.auth_wrapper .form-control:focus {
+  border-color: #167bff;
+  box-shadow: none;
+}
+
+.auth_wrapper h3 {
+  text-align: center;
+  margin: 0;
+  line-height: 1;
+}
+
+.card {
+  width: 100%;
+  max-width: 350px;
+}

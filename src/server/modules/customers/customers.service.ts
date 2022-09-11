@@ -18,7 +18,16 @@ export class CustomersService {
   }
 
   findAll() {
-    return this.prisma.customer.findMany();
+    return this.prisma.customer.findMany({
+      orderBy: [
+        {
+          id: 'desc',
+        },
+      ],
+      include: {
+        orders: true,
+      },
+    });
   }
 
   findOne(id: number) {
@@ -32,7 +41,18 @@ export class CustomersService {
     });
   }
 
-  remove(id: number) {
+  async remove(id: number) {
+    const user = await this.prisma.customer.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        orders: true,
+      },
+    });
+    for (const i in user.orders) {
+      await this.prisma.order.delete({ where: { id: user.orders[i].id } });
+    }
     return this.prisma.customer.delete({ where: { id } });
   }
 }

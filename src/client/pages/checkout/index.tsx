@@ -8,6 +8,7 @@ import CartContext from '../../contexts/CartContext';
 import { Country, State } from 'country-state-city';
 import axios from 'axios';
 import { useRef } from 'react';
+import CurrencyList from 'currency-list';
 
 export default function Checkout() {
   const cartItems = useContext(CartContext);
@@ -16,8 +17,11 @@ export default function Checkout() {
   const [orderId, setOrderId] = useState(null);
   const [showCart, setShowCart] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [countries, setCountries] = useState(Country.getAllCountries());
+  const countries = Country.getAllCountries();
   const [states, setStates] = useState([]);
+  const [currency, setCurrency] = useState({
+    symbol: '$',
+  });
   const [customerDetails, setCustomerDetails] = useState({
     firstName: '',
     lastName: '',
@@ -35,6 +39,7 @@ export default function Checkout() {
     baseURL: '',
     stripeKey: '',
     nowPaymentsKey: '',
+    currency: 'USD',
   });
 
   useEffect(() => {
@@ -42,15 +47,29 @@ export default function Checkout() {
   }, []);
 
   useEffect(() => {
-    if (env.nowPaymentsKey != '') {
+    setCurrency(CurrencyList.get(env.currency));
+    if (env.nowPaymentsKey.trim() != '') {
       fetchCurrencies();
     }
   }, [env]);
 
   const fetchEnv = async () => {
-    const res = await axios.get('/orders/env');
-    console.log(res);
-    setEnv(res.data);
+    const websiteRes = await axios.get('/website');
+    setEnv((current) => {
+      return {
+        ...current,
+        baseURL: websiteRes.data.baseUrl,
+        currency: websiteRes.data.currency,
+      };
+    });
+    const paymentRes = await axios.get('/payment');
+    setEnv((current) => {
+      return {
+        ...current,
+        stripeKey: paymentRes.data.stripe,
+        nowPaymentsKey: paymentRes.data.nowPayments,
+      };
+    });
   };
 
   useEffect(() => {
@@ -96,7 +115,11 @@ export default function Checkout() {
   const paymentDetailsHandler = (value, key) => {
     setPaymentDetails({ ...paymentDetails, [key]: value });
     if (key == 'type' && value == 'stripe') {
-      setPaymentDetails({ ...paymentDetails, currency: 'usd', [key]: value });
+      setPaymentDetails({
+        ...paymentDetails,
+        currency: env.currency,
+        [key]: value,
+      });
     }
   };
 
@@ -130,7 +153,7 @@ export default function Checkout() {
         'https://api.nowpayments.io/v1/invoice',
         {
           price_amount: totalPrice,
-          price_currency: 'usd',
+          price_currency: env.currency.toLocaleLowerCase(),
           pay_currency: paymentDetails.currency,
           ipn_callback_url: 'https://api.nowpayments.io',
           order_id: orderId,
@@ -186,13 +209,17 @@ export default function Checkout() {
                     <small className="text-muted">{item.features[0]}</small>
                   </div>
                   <span className="text-muted">
-                    ${item.price * item.quantity}
+                    {currency.symbol}
+                    {item.price * item.quantity}
                   </span>
                 </li>
               ))}
               <li className="list-group-item d-flex justify-content-between">
                 <span>Total (USD)</span>
-                <strong>${totalPrice}</strong>
+                <strong>
+                  {currency.symbol}
+                  {totalPrice}
+                </strong>
               </li>
             </ul>
 

@@ -21,6 +21,7 @@ lerna-debug.log*
 # IDEs and editors
 /.idea
 .project
+/src/client/.next
 .classpath
 .c9/
 *.launch

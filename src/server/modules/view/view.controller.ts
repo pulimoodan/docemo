@@ -8,7 +8,7 @@ export class ViewController {
   constructor(private viewService: ViewService) {}
 
   // Add all view base paths here
-  @Get(['/', '_next*', 'checkout*'])
+  @Get(['/', '_next*', 'checkout*', 'admin*'])
   public async showHome(@Req() req: Request, @Res() res: Response) {
     this._fireUpNext(req, res);
   }

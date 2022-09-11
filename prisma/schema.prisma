@@ -74,3 +74,35 @@ model OrderProduct {
 
   @@unique([productId, quantity])
 }
+
+model Email {
+  id Int @id @default(autoincrement())
+
+  host     String
+  port     Int
+  user     String @unique
+  password String
+  from     String
+  to       String
+}
+
+model Payment {
+  id Int @id @default(autoincrement())
+
+  stripe      String @unique
+  nowPayments String
+}
+
+model Admin {
+  id Int @id @default(autoincrement())
+
+  email    String @unique
+  password String
+}
+
+model Website {
+  id Int @id @default(autoincrement())
+
+  currency String
+  baseUrl  String @unique
+}

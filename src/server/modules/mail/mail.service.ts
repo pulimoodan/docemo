@@ -1,16 +1,28 @@
-import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable } from '@nestjs/common';
+import { EmailService } from '../email/email.service';
 import { ProductsService } from '../products/products.service';
+import * as nodemailer from 'nodemailer';
 
 @Injectable()
 export class MailService {
   constructor(
-    private mailerService: MailerService,
     private productService: ProductsService,
+    private emailService: EmailService,
   ) {}
 
   async sendConfirmationEmail(customer, order) {
-    return await this.mailerService.sendMail({
+    const config = await this.emailService.getConfig();
+    let transporter = nodemailer.createTransport({
+      host: config.host,
+      port: config.port,
+      secure: false,
+      auth: {
+        user: config.user,
+        pass: config.password,
+      },
+    });
+    return await transporter.sendMail({
+      from: config.from, // sender address
       to: customer.email,
       subject: 'Welcome to Windows Server Support! Confirm your purchase',
       html: await this.confirmationHTML(customer, order),
@@ -18,16 +30,38 @@ export class MailService {
   }
 
   async sendEmailNotification(customer, order) {
-    return await this.mailerService.sendMail({
-      to: process.env.MAIL_TO,
+    const config = await this.emailService.getConfig();
+    let transporter = nodemailer.createTransport({
+      host: config.host,
+      port: config.port,
+      secure: false,
+      auth: {
+        user: config.user,
+        pass: config.password,
+      },
+    });
+    return await transporter.sendMail({
+      from: config.from, // sender address
+      to: config.to, // list of receivers
       subject: 'New order from windows server support',
       html: await this.notificationHTML(customer, order),
     });
   }
 
   async sendEnquiryEmail(email) {
-    return await this.mailerService.sendMail({
-      to: process.env.MAIL_TO,
+    const config = await this.emailService.getConfig();
+    let transporter = nodemailer.createTransport({
+      host: config.host,
+      port: config.port,
+      secure: false,
+      auth: {
+        user: config.user,
+        pass: config.password,
+      },
+    });
+    return await transporter.sendMail({
+      from: config.from, // sender address
+      to: config.to, // list of receivers
       subject: 'New enquiry from windows server support',
       html: await this.enquiryHTML(email),
     });

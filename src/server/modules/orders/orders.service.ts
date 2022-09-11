@@ -12,14 +12,6 @@ export class OrdersService {
     private mailService: MailService,
   ) {}
 
-  loadEnv() {
-    return {
-      baseURL: process.env.BASE_URL || null,
-      stripeKey: process.env.STRIPE_KEY || null,
-      nowPaymentsKey: process.env.NOW_PAYMENTS_KEY || null,
-    };
-  }
-
   async create(createOrderDto: CreateOrderDto) {
     let orderProducts = [];
     for (const i in createOrderDto.productsArray) {
@@ -27,13 +19,13 @@ export class OrdersService {
         where: {
           productId_quantity: {
             productId: createOrderDto.productsArray[i].id,
-            quantity: createOrderDto.productsArray[i].quantity,
+            quantity: Number(createOrderDto.productsArray[i].quantity),
           },
         },
         update: {},
         create: {
           productId: createOrderDto.productsArray[i].id,
-          quantity: createOrderDto.productsArray[i].quantity,
+          quantity: Number(createOrderDto.productsArray[i].quantity),
         },
       });
       orderProducts.push(orderProduct);
@@ -54,17 +46,53 @@ export class OrdersService {
   }
 
   findAll() {
-    return this.prisma.order.findMany();
+    return this.prisma.order.findMany({
+      include: {
+        customer: true,
+        products: {
+          include: {
+            product: true,
+          },
+        },
+      },
+    });
   }
 
   findOne(id: number) {
     return this.prisma.order.findUnique({ where: { id } });
   }
 
-  update(id: number, updateOrderDto: UpdateOrderDto) {
+  async update(id: number, updateOrderDto: UpdateOrderDto) {
+    let orderProducts = [];
+    for (const i in updateOrderDto.productsArray) {
+      const orderProduct = await this.prisma.orderProduct.upsert({
+        where: {
+          productId_quantity: {
+            productId: updateOrderDto.productsArray[i].id,
+            quantity: Number(updateOrderDto.productsArray[i].quantity),
+          },
+        },
+        update: {},
+        create: {
+          productId: updateOrderDto.productsArray[i].id,
+          quantity: Number(updateOrderDto.productsArray[i].quantity),
+        },
+      });
+      orderProducts.push(orderProduct);
+    }
     return this.prisma.order.update({
       where: { id },
-      data: updateOrderDto,
+      data: {
+        products: {
+          set: orderProducts.map((item) => {
+            return { id: item.id };
+          }),
+        },
+        customer: { connect: { id: updateOrderDto.customerId } },
+        paid: updateOrderDto.paid,
+        paymentType: updateOrderDto.paymentType,
+        paymentCurrency: updateOrderDto.paymentCurrency,
+      },
     });
   }
 
