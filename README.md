@@ -6,7 +6,7 @@ $ yarn
 
 ## Environment variables
 
-Copy the `.env.example` file and create a `.env` file. Configure your database and other env variables. 
+Copy the `.env.example` file and create a `.env` file. Configure your database and other env variables.
 
 ## Website url
 

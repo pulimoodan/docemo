@@ -93,13 +93,6 @@ model Payment {
   nowPayments String
 }
 
-model Admin {
-  id Int @id @default(autoincrement())
-
-  email    String @unique
-  password String
-}
-
 model Website {
   id Int @id @default(autoincrement())
 
